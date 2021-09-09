@@ -71,7 +71,3 @@ function goodsCounter(array) {
 }
 
 let result = goodsCounter(arr);
-
-
-
-console.log(result, newArr);
