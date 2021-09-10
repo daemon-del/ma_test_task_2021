@@ -24,18 +24,28 @@ const arr = [
     {"item":"orange","type":"Tangerine","weight":4,"pricePerKilo":"$4,99"},
     {"item":"apple","type":"Jazz","weight":4,"pricePerKilo":"$5"},
 ];
+
 const newArr = arr.filter((item) => {
-    return
-    typeof item.item === 'string' &&
-    typeof item.type === 'string' &&
-    (typeof item.weight === 'number' || typeof item.quantity === 'number') &&
-    (
-        (typeof item.pricePerKilo !== 'undefined' && item.pricePerKilo[0] === '$' && typeof +pricePerKilo.slice(0).replace(',' , '.') === 'number'   ) ||
-        (typeof  item.pricePerItem !== 'undefined' && item.pricePerItem[0] === '$' &&  typeof +pricePerItem.slice(0).replace(',' , '.') === 'number'  )
+    return (
+        typeof item.item === 'string' &&
+        typeof item.type === 'string' &&
+        (typeof item.weight === 'number' || typeof item.quantity === 'number') &&
+        (
+            (typeof item.pricePerKilo !== 'undefined' && item.pricePerKilo[0] === '$' && typeof +item.pricePerKilo.slice(1).replace(',' , '.') === 'number'   ) ||
+            (typeof  item.pricePerItem !== 'undefined' && item.pricePerItem[0] === '$' &&  typeof +item.pricePerItem.slice(1).replace(',' , '.') === 'number'  )
+        )
     )
 })
 
+function sortByCost(array){
+    const sortedArr = array.sort(function (a, b){
+        const firstCost = a.pricePerKilo || a.pricePerItem;
+        const secondCosr = b.pricePerKilo || b.pricePerItem;
+        return +firstCost.slice(1).replace(',','.') - +secondCosr.slice(1).replace(',','.');
+    })
 
+    return sortedArr;
+}
 
 function goodsCounter(array) {
 
@@ -52,22 +62,11 @@ function goodsCounter(array) {
     })
 
 
-    item.sort();
-    pracePerKilo.sort(function (a, b) {
-        if (a > b) {
-            return 1
-        }
-        if (a < b) {
-            return -1
-        }
-        if (a = b) {
-            return  0
-        }
-    })
-
-
-
     return {appleWeight, watermelonQuantity}
 }
 
-let result = goodsCounter(arr);
+const counted = goodsCounter(newArr);
+
+const sortedByCost = sortByCost(newArr);
+
+console.log(counted, newArr, sortedByCost);
