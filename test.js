@@ -47,23 +47,60 @@ function sortByCost(array){
     return sortedArr;
 }
 
+function  sortByAlphabet(array){
+    const sortedArr = array.sort(function (a, b) {
+        a.item.localeCompare(b.item);
+    })
+    return sortedArr;
+}
+
 function goodsCounter(array) {
 
     let watermelonQuantity = 0;
     let appleWeight = 0;
+    let orangeLeastPrice = 0;
+    let orangeLeastType = '';
 
     array.forEach((element) => {
-        if (element.item === 'watermelon' && element.quantity) {
-            watermelonQuantity += element.quantity;
+        const item = element.item;
+        const type = element.type;
+        const quantity = element.quantity;
+        const weight = element.weight;
+        const pricePerKilo = element.pricePerKilo;
+        const pricePerItem = element.pricePerItem;
+
+        let price = 0;
+
+        if (typeof pricePerKilo !== 'undefined') {
+            price = +pricePerKilo.slice(1).replace(',', '.');
+        } else {
+            price = +pricePerItem.slice(1).replace(',', '.');
         }
-        if (element.item === 'apple' && element.weight) {
-            appleWeight += element.weight;
+
+        if (item === 'watermelon' && quantity) {
+            watermelonQuantity += quantity;
+        }
+        if (item === 'apple' && weight) {
+            appleWeight += weight;
+        }
+        if (item === 'orange') {
+          if (orangeLeastPrice === 0) {
+              orangeLeastPrice = price;
+              orangeLeastType = type;
+          }
+          if (price < orangeLeastPrice){
+              orangeLeastPrice = price;
+              orangeLeastType = type;
+          }
+
         }
     })
 
 
     return {appleWeight, watermelonQuantity}
 }
+
+
 
 const counted = goodsCounter(newArr);
 
